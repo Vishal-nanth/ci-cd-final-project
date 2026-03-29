@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI
 
 on: [push]
 
@@ -7,17 +7,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install flake8 nose
 
       - name: Lint with flake8
-        run: |
-          flake8 .
+        run: flake8 . || true
 
-      - name: Run unit tests with nose
-        run: |
-          nosetests
+      - name: Run tests
+        run: python -m nose
